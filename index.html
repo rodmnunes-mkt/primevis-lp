@@ -15,11 +15,39 @@
 <link rel="stylesheet" href="assets/css/styles.css">
 
 <style>
+:root{
+  /* Ritmo e layout responsivos — redefinidos nas media queries no fim
+     deste bloco. Referenciados via var() mesmo dentro de atributos style=""
+     inline, porque custom properties seguem o cascade normal (a declaração
+     inline não fixa um valor literal, só aponta para a variável). */
+  --pv-section-y:96px;
+  --pv-gap-xl:72px;
+  --pv-gap-steps:16px;
+  --pv-hero-cols:1.15fr .85fr;
+  --pv-perda-cols:1.15fr .85fr;
+  --pv-steps-cols:repeat(3,1fr);
+  --pv-funciona-cols:.85fr 1.15fr;
+  --pv-prova-cols:repeat(3,1fr);
+  --pv-sobre-cols:.7fr 1.3fr;
+  --pv-faq-cols:repeat(auto-fit,minmax(min(100%,340px),1fr));
+  --pv-timeline-cols:120px 1fr;
+  --pv-timeline-gap:32px;
+  --pv-sticky-pos:sticky;
+  --pv-sticky-top:40px;
+  --pv-quote-pad:56px 40px;
+  --pv-box-pad:40px;
+  --pv-nav-gap:32px;
+  --pv-nav-fs:15px;
+}
+
 body{margin:0;background:#0C0613}
 a{color:#DC1FFF;text-decoration:none}
 a:hover{color:#F4F1FA}
 @keyframes pv-trace-x{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 #perguntas button[aria-expanded="true"]>svg{color:#DC1FFF !important}
+
+.pv-header-inner{flex-wrap:wrap;row-gap:12px}
+.pv-nav{flex-wrap:wrap;justify-content:center}
 
 .pv-btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s-2);height:54px;padding:0 28px;font-family:var(--font-body);font-weight:600;font-size:17px;line-height:1;border-radius:var(--r-pill);border:1px solid transparent;cursor:pointer;text-decoration:none;transition:background var(--dur-2) var(--ease-out),background-position var(--dur-2) var(--ease-out),transform var(--dur-1) var(--ease-decide),border-color var(--dur-2) var(--ease-out),color var(--dur-2) var(--ease-out)}
 .pv-btn-gradient{background:var(--pv-fluxo-prime);background-size:160% 100%;background-position:0% 50%;color:var(--pv-nevoa)}
@@ -33,6 +61,60 @@ a:hover{color:#F4F1FA}
 .pv-accordion-trigger[aria-expanded="true"] svg{transform:rotate(180deg)}
 .pv-accordion-panel{padding:0 var(--s-6) var(--s-5);font-family:var(--font-body);font-size:var(--t-body-sm);line-height:var(--lh-body);color:var(--pv-nevoa-64)}
 .pv-accordion-panel[hidden]{display:none}
+
+.pv-prova-col-a,.pv-prova-col-b,.pv-prova-col-c{display:grid;gap:12px;align-content:start}
+.pv-prova-col-a{padding-right:40px}
+.pv-prova-col-b{padding:0 40px;border-left:1px solid rgba(244,241,250,.12)}
+.pv-prova-col-c{padding-left:40px;border-left:1px solid rgba(244,241,250,.12)}
+
+.pv-footer-inner{flex-wrap:wrap}
+
+/* ---- Breakpoints: regras de override sempre DEPOIS das regras base,
+   para vencer no cascade sem precisar de !important em toda parte. ---- */
+
+/* Tablet (768–1024px) e mobile: os grids de 2-3 colunas empilham em uma
+   coluna, a coluna sticky vira estática, e o ritmo vertical entre blocos
+   reduz proporcionalmente (nunca colapsa a zero). Hero empilha aqui também. */
+@media (max-width:1024px){
+  :root{
+    --pv-section-y:64px;
+    --pv-gap-xl:40px;
+    --pv-gap-steps:20px;
+    --pv-hero-cols:1fr;
+    --pv-perda-cols:1fr;
+    --pv-steps-cols:1fr;
+    --pv-funciona-cols:1fr;
+    --pv-prova-cols:1fr;
+    --pv-sobre-cols:1fr;
+    --pv-faq-cols:1fr;
+    --pv-timeline-cols:56px 1fr;
+    --pv-timeline-gap:20px;
+    --pv-sticky-pos:static;
+    --pv-sticky-top:0;
+    --pv-quote-pad:40px 28px;
+    --pv-box-pad:28px;
+  }
+  .pv-prova-col-a,.pv-prova-col-b,.pv-prova-col-c{padding:0}
+  .pv-prova-col-b,.pv-prova-col-c{border-left:0;border-top:1px solid rgba(244,241,250,.12);padding-top:28px}
+  .pv-footer-inner{justify-content:center;text-align:center}
+  .pv-footer-legal{justify-items:center}
+  .pv-footer-social{justify-items:center;text-align:center}
+  .pv-footer-social>div{justify-content:center}
+}
+
+/* Mobile (até 480px): ajuste fino extra — nav mais compacta, padding de
+   card reduzido, mas sempre um valor visível, nunca 0. */
+@media (max-width:480px){
+  :root{
+    --pv-section-y:44px;
+    --pv-box-pad:20px;
+    --pv-quote-pad:32px 20px;
+    --pv-nav-gap:16px;
+    --pv-nav-fs:13px;
+  }
+  .pv-accordion-trigger{padding:var(--s-4) var(--s-5)}
+  .pv-accordion-panel{padding:0 var(--s-5) var(--s-4)}
+}
 </style>
 
 <!-- Meta Pixel Code -->
@@ -57,18 +139,18 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 <div style="font-family:'Instrument Sans',system-ui,sans-serif;background:#0C0613;background-image:linear-gradient(180deg,#0A0510 0%,#130B1F 14%,#0C0613 30%,#140C21 46%,#0C0613 60%,#120A1D 76%,#0B0512 88%,#0C0613 100%);color:#F4F1FA;overflow-x:hidden">
 
 <header style="padding:24px">
-<div style="max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px">
+<div class="pv-header-inner" style="max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px">
 <span style="display:inline-flex;align-items:center;gap:10px"><img src="assets/img/logo-primevis.png" alt="PrimeVis" width="28" height="28" style="display:block;width:28px;height:28px;border-radius:22%"><span style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:21px;letter-spacing:-.03em">Prime<span style="background-image:linear-gradient(96deg,#C112F0 0%,#DC1FFF 44%,#A683FF 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#DC1FFF">Vis</span></span></span>
-<nav style="display:flex;align-items:center;gap:32px">
-<a href="#metodo" style="font-size:15px;font-weight:500;color:rgba(244,241,250,.64)">O método</a>
-<a href="#funciona" style="font-size:15px;font-weight:500;color:rgba(244,241,250,.64)">Como funciona</a>
-<a href="#perguntas" style="font-size:15px;font-weight:500;color:rgba(244,241,250,.64)">Perguntas</a>
+<nav class="pv-nav" style="display:flex;align-items:center;gap:var(--pv-nav-gap)">
+<a href="#metodo" style="font-size:var(--pv-nav-fs);font-weight:500;color:rgba(244,241,250,.64)">O método</a>
+<a href="#funciona" style="font-size:var(--pv-nav-fs);font-weight:500;color:rgba(244,241,250,.64)">Como funciona</a>
+<a href="#perguntas" style="font-size:var(--pv-nav-fs);font-weight:500;color:rgba(244,241,250,.64)">Perguntas</a>
 </nav>
 </div>
 </header>
 
-<section style="padding:96px 24px 96px">
-<div style="max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:72px;align-items:center">
+<section style="padding:var(--pv-section-y) 24px var(--pv-section-y)">
+<div style="max-width:1160px;margin:0 auto;display:grid;grid-template-columns:var(--pv-hero-cols);gap:var(--pv-gap-xl);align-items:center">
 <div style="display:grid;gap:32px">
 <h1 style="font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:clamp(36px,4.2vw,60px);line-height:1.04;letter-spacing:-.03em;margin:0;text-wrap:balance">A indicação sustenta sua agenda hoje.<br><span style="background:linear-gradient(135deg,#7130F0,#9109DF,#DC1FFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#DC1FFF">Quem faz ela crescer é quem nunca ouviu falar da sua clínica.</span></h1>
 <p style="font-size:19px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;max-width:56ch;text-wrap:pretty">O Método Ponto de Decisão™ é o sistema de três etapas da PrimeVis que leva esse desconhecido do primeiro clique até a mensagem no WhatsApp, com prova de confiança posicionada no meio do caminho.</p>
@@ -81,8 +163,8 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 </div>
 </section>
 
-<section style="padding:0 24px 96px">
-<div style="max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1.15fr .85fr;gap:72px 72px;align-items:start">
+<section style="padding:0 24px var(--pv-section-y)">
+<div style="max-width:1160px;margin:0 auto;display:grid;grid-template-columns:var(--pv-perda-cols);gap:var(--pv-gap-xl) var(--pv-gap-xl);align-items:start">
 <div style="display:grid;gap:20px">
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent,#9109DF)">01 — O que ninguém vê</span>
 <h2 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:clamp(28px,3vw,40px);line-height:1.1;letter-spacing:-.02em;margin:0;max-width:22ch;text-wrap:balance">A perda que não aparece em nenhum relatório</h2>
@@ -140,13 +222,13 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 </div>
 <p style="font-size:17px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;max-width:56ch;text-wrap:pretty">Pode ser preço, pode ser distância, pode ser a primeira impressão que a página passa depois do clique. A causa muda de clínica pra clínica. O que não muda é a pergunta: seu Google e sua página respondem hoje quem já decidiu marcar, ou também quem está decidindo agora, sem te conhecer?</p>
 </div>
-<div style="grid-column:1 / -1;background:#16102A;border:1px solid rgba(244,241,250,.08);border-radius:28px;box-shadow:0 6px 20px rgba(0,0,0,.24);padding:56px 40px;display:grid;place-items:center">
+<div style="grid-column:1 / -1;background:#16102A;border:1px solid rgba(244,241,250,.08);border-radius:28px;box-shadow:0 6px 20px rgba(0,0,0,.24);padding:var(--pv-quote-pad);display:grid;place-items:center">
 <p style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:clamp(22px,2.2vw,30px);line-height:1.22;letter-spacing:-.02em;color:#F4F1FA;margin:0;max-width:30ch;text-align:center;text-wrap:balance">É esse intervalo, entre <span style="color:#DC1FFF">ser encontrada</span> e <span style="color:#DC1FFF">ser escolhida</span>, que o Método Ponto de Decisão foi construído para resolver.</p>
 </div>
 </div>
 </section>
 
-<section id="metodo" style="color:#F4F1FA;padding:96px 24px">
+<section id="metodo" style="color:#F4F1FA;padding:var(--pv-section-y) 24px">
 <div style="max-width:1160px;margin:0 auto">
 <div style="display:grid;gap:20px;justify-items:center;text-align:center">
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent,#9109DF)">02 — O método</span>
@@ -154,7 +236,7 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 <p style="font-size:18px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;max-width:60ch;text-wrap:pretty">Três etapas, cada uma resolvendo uma parte específica da perda entre a busca e o contato.</p>
 </div>
 <div style="height:1px;background:linear-gradient(90deg,rgba(145,9,223,.36),rgba(220,31,255,.28) 50%,rgba(166,131,255,.12));margin:56px 0 40px;transform-origin:left;animation:pv-trace-x 900ms var(--ease-out,cubic-bezier(.22,.61,.36,1)) both"></div>
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+<div style="display:grid;grid-template-columns:var(--pv-steps-cols);gap:var(--pv-gap-steps)">
 <div style="background:#16102A;border:1px solid rgba(244,241,250,.08);border-radius:20px;padding:32px;box-shadow:0 1px 2px rgba(0,0,0,.24);display:grid;gap:12px;align-content:start">
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.08em;color:#DC1FFF">ETAPA 01</span>
 <h3 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:22px;line-height:1.12;letter-spacing:-.015em;margin:0">Ser Achada</h3><span style="display:flex;align-items:center;gap:6px;color:rgba(244,241,250,.64);margin:4px 0 4px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg></span>
@@ -177,9 +259,9 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 </div>
 </section>
 
-<section id="funciona" style="padding:96px 24px">
-<div style="max-width:1160px;margin:0 auto;display:grid;grid-template-columns:.85fr 1.15fr;gap:72px;align-items:start">
-<div style="display:grid;gap:16px;align-content:start;position:sticky;top:40px">
+<section id="funciona" style="padding:var(--pv-section-y) 24px">
+<div style="max-width:1160px;margin:0 auto;display:grid;grid-template-columns:var(--pv-funciona-cols);gap:var(--pv-gap-xl);align-items:start">
+<div style="display:grid;gap:16px;align-content:start;position:var(--pv-sticky-pos);top:var(--pv-sticky-top)">
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent,#9109DF)">03 — Execução</span>
 <h2 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:clamp(28px,3vw,40px);line-height:1.1;letter-spacing:-.02em;margin:0;max-width:18ch;text-wrap:balance">Como funciona</h2>
 <p style="font-size:17px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;max-width:44ch;text-wrap:pretty">A entrega é por conta da PrimeVis. Ela monta a estrutura completa, você não precisa aprender ferramenta nova para ela funcionar.</p>
@@ -227,19 +309,19 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 </div>
 </div>
 <div style="display:grid">
-<div style="display:grid;grid-template-columns:120px 1fr;gap:32px;padding:28px 0;border-top:1px solid rgba(244,241,250,.12)">
+<div style="display:grid;grid-template-columns:var(--pv-timeline-cols);gap:var(--pv-timeline-gap);padding:28px 0;border-top:1px solid rgba(244,241,250,.12)">
 <span style="color:#DC1FFF;display:flex;padding-top:2px"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg></span>
 <div style="display:grid;gap:8px"><h3 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:20px;line-height:1.15;letter-spacing:-.015em;margin:0">Diagnóstico</h3><p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;max-width:56ch;text-wrap:pretty">Levantamento de como sua clínica aparece hoje para quem não conhece: busca, página atual (quando existe) e comportamento de quem chega até você.</p></div>
 </div>
-<div style="display:grid;grid-template-columns:120px 1fr;gap:32px;padding:28px 0;border-top:1px solid rgba(244,241,250,.12)">
+<div style="display:grid;grid-template-columns:var(--pv-timeline-cols);gap:var(--pv-timeline-gap);padding:28px 0;border-top:1px solid rgba(244,241,250,.12)">
 <span style="color:#DC1FFF;display:flex;padding-top:2px"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg></span>
 <div style="display:grid;gap:8px"><h3 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:20px;line-height:1.15;letter-spacing:-.015em;margin:0">Construção</h3><p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;max-width:56ch;text-wrap:pretty">Montagem do GMN, da página de conversão e da copy escrita para sua área de atuação, com as provas de confiança posicionadas nos pontos certos.</p></div>
 </div>
-<div style="display:grid;grid-template-columns:120px 1fr;gap:32px;padding:28px 0;border-top:1px solid rgba(244,241,250,.12)">
+<div style="display:grid;grid-template-columns:var(--pv-timeline-cols);gap:var(--pv-timeline-gap);padding:28px 0;border-top:1px solid rgba(244,241,250,.12)">
 <span style="color:#DC1FFF;display:flex;padding-top:2px"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg></span>
 <div style="display:grid;gap:8px"><h3 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:20px;line-height:1.15;letter-spacing:-.015em;margin:0">Conexão</h3><p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;max-width:56ch;text-wrap:pretty">Integração do WhatsApp, ativação do QR Code de avaliação e das mensagens prontas que ajudam a construir prova ao longo do tempo.</p></div>
 </div>
-<div style="display:grid;grid-template-columns:120px 1fr;gap:32px;padding:28px 0;border-top:1px solid rgba(244,241,250,.12)">
+<div style="display:grid;grid-template-columns:var(--pv-timeline-cols);gap:var(--pv-timeline-gap);padding:28px 0;border-top:1px solid rgba(244,241,250,.12)">
 <span style="color:#DC1FFF;display:flex;padding-top:2px"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M8 13h.01"/><path d="M12 13h.01"/><path d="M16 13h.01"/><path d="M8 17h.01"/><path d="M12 17h.01"/><path d="M16 17h.01"/></svg></span>
 <div style="display:grid;gap:8px"><h3 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:20px;line-height:1.15;letter-spacing:-.015em;margin:0">Acompanhamento</h3><p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;max-width:56ch;text-wrap:pretty">Trinta dias de acompanhamento depois da entrega, para ajustar o que precisar de ajuste.</p></div>
 </div>
@@ -248,25 +330,25 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 </div>
 </section>
 
-<section style="padding:0 24px 96px">
+<section style="padding:0 24px var(--pv-section-y)">
 <div style="max-width:1160px;margin:0 auto;display:grid;gap:40px">
 <div style="display:grid;gap:16px;max-width:56ch">
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent,#9109DF)">04 — Prova</span>
 <h2 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:clamp(28px,3vw,40px);line-height:1.1;letter-spacing:-.02em;margin:0;text-wrap:balance">O padrão que sustenta o método</h2>
 <p style="font-size:17px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;text-wrap:pretty">O padrão se repete em clínicas de portes diferentes: boa reputação com quem já é paciente, indicação forte, quase nenhuma resposta de quem procura pela primeira vez.</p>
 </div>
-<div style="background:#16102A;border:1px solid rgba(244,241,250,.08);border-radius:28px;padding:40px;display:grid;grid-template-columns:repeat(3,1fr)">
-<div style="display:grid;gap:12px;align-content:start;padding-right:40px">
+<div style="background:#16102A;border:1px solid rgba(244,241,250,.08);border-radius:28px;padding:var(--pv-box-pad);display:grid;grid-template-columns:var(--pv-prova-cols)">
+<div class="pv-prova-col-a">
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.44)">O QUE SE OBSERVA</span>
 <p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.86);margin:0">Quem já é paciente indica sem pensar duas vezes. Quem nunca ouviu falar da clínica chega em silêncio, sem nenhum sinal de confiança.</p>
 <p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.64);margin:0">Por isso a primeira etapa existe: preparar a clínica pra esse desconhecido.</p>
 </div>
-<div style="display:grid;gap:12px;align-content:start;padding:0 40px;border-left:1px solid rgba(244,241,250,.12)">
+<div class="pv-prova-col-b">
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.44)">O QUE SE REPETE</span>
 <p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.86);margin:0">Entre encontrar o nome da clínica e decidir marcar, esse desconhecido procura algum sinal de que outras pessoas já confiaram antes.</p>
 <p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.64);margin:0">Por isso a prova fica no meio do caminho, onde a dúvida nasce.</p>
 </div>
-<div style="display:grid;gap:12px;align-content:start;padding-left:40px;border-left:1px solid rgba(244,241,250,.12)">
+<div class="pv-prova-col-c">
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.44)">O QUE SE CONFIRMA</span>
 <p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.86);margin:0">Quando a mensagem chega no WhatsApp, o que confirma se a clínica estava pronta é o quanto esse desconhecido já sabe sobre o que vai encontrar.</p>
 <p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.64);margin:0">Por isso a última etapa fecha o caminho: contexto antes da primeira palavra.</p>
@@ -278,8 +360,8 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 </div>
 </section>
 
-<section style="color:#F4F1FA;padding:96px 24px">
-<div style="max-width:1160px;margin:0 auto;display:grid;grid-template-columns:.7fr 1.3fr;gap:72px;align-items:start">
+<section style="color:#F4F1FA;padding:var(--pv-section-y) 24px">
+<div style="max-width:1160px;margin:0 auto;display:grid;grid-template-columns:var(--pv-sobre-cols);gap:var(--pv-gap-xl);align-items:start">
 <img src="assets/img/rodrigo.jpg" alt="Rodrigo, fundador da PrimeVis" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 22%;border-radius:20px">
 <div style="display:grid;gap:24px">
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent,#9109DF)">05 — Quem faz</span>
@@ -290,13 +372,13 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 </div>
 </section>
 
-<section id="perguntas" style="padding:96px 24px">
+<section id="perguntas" style="padding:var(--pv-section-y) 24px">
 <div style="max-width:1160px;margin:0 auto;display:grid;gap:40px">
 <div style="display:grid;gap:20px">
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent,#9109DF)">06 — Perguntas frequentes</span>
 <h2 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:clamp(26px,2.8vw,38px);line-height:1.1;letter-spacing:-.02em;margin:0;max-width:24ch;text-wrap:balance">O que donos e donas de clínica fazem antes de fechar</h2>
 </div>
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px;align-items:start">
+<div style="display:grid;grid-template-columns:var(--pv-faq-cols);gap:24px;align-items:start">
 
 <div class="pv-accordion" data-accordion>
 <div class="pv-accordion-item">
@@ -357,8 +439,8 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 </div>
 </section>
 
-<section style="padding:0 24px 96px">
-<div style="max-width:1160px;margin:0 auto;border-top:1px solid rgba(244,241,250,.12);padding-top:96px;display:grid;gap:32px;justify-items:center;text-align:center">
+<section style="padding:0 24px var(--pv-section-y)">
+<div style="max-width:1160px;margin:0 auto;border-top:1px solid rgba(244,241,250,.12);padding-top:var(--pv-section-y);display:grid;gap:32px;justify-items:center;text-align:center">
 <h2 style="font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:clamp(30px,3.6vw,52px);line-height:1.06;letter-spacing:-.03em;margin:0;max-width:22ch;text-wrap:balance">O próximo passo é <span style="color:#DC1FFF">uma conversa</span></h2>
 <p style="font-size:18px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;max-width:52ch;text-wrap:pretty">Você viu como o Método Ponto de Decisão foi pensado para reduzir a distância entre alguém que nunca ouviu falar da sua clínica e alguém pronto para marcar. Se isso faz sentido para a realidade da sua clínica, a PrimeVis está a uma mensagem de distância para te mostrar por onde o diagnóstico começa.</p>
 <a href="https://wa.me/5541991811201?text=Oi%2C%20Rodrigo.%20Vim%20pela%20p%C3%A1gina%20e%20quero%20fazer%20o%20Teste%20do%20Desconhecido." target="_blank" rel="noopener" class="pv-btn pv-btn-gradient" data-pixel="lead">Fazer o Teste do Desconhecido</a>
@@ -366,7 +448,7 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 </section>
 
 <footer style="padding:0 24px 56px">
-<div style="max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;border-top:1px solid rgba(244,241,250,.12);padding-top:24px">
+<div class="pv-footer-inner" style="max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px;border-top:1px solid rgba(244,241,250,.12);padding-top:24px">
 <div style="display:flex;align-items:center;gap:12px">
 <img src="assets/img/logo-primevis.png" alt="PrimeVis" width="34" height="34" style="display:block;width:34px;height:34px;border-radius:22%">
 <span style="display:grid;gap:6px">
@@ -374,11 +456,11 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.04em;color:rgba(244,241,250,.44)">Páginas de conversão para clínicas</span>
 </span>
 </div>
-<div style="display:grid;gap:8px;justify-items:center;text-align:center">
+<div class="pv-footer-legal" style="display:grid;gap:8px;justify-items:center;text-align:center">
 <a href="#" style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.44)">POLÍTICA DE PRIVACIDADE</a>
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.04em;color:rgba(244,241,250,.32)">© 2026 PrimeVis. Todos os direitos reservados.</span>
 </div>
-<div style="display:grid;gap:10px;justify-items:end;text-align:right">
+<div class="pv-footer-social" style="display:grid;gap:10px;justify-items:end;text-align:right">
 <div style="display:flex;align-items:center;gap:32px;flex-wrap:wrap;justify-content:flex-end">
 <a href="https://wa.me/5541991811201?text=Oi%2C%20Rodrigo.%20Vim%20pela%20p%C3%A1gina%20e%20quero%20fazer%20o%20Teste%20do%20Desconhecido." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:500;color:rgba(244,241,250,.86)"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>WhatsApp</a>
 <a href="https://instagram.com/primevis.ia" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:500;color:rgba(244,241,250,.64)"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg>Instagram</a>
