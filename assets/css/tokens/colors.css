@@ -1,0 +1,68 @@
+:root{
+  /* Paleta fechada — nenhum outro hex é permitido */
+  --pv-violeta-prime:#9109DF;
+  --pv-magenta-sinal:#DC1FFF;
+  --pv-indigo-base:#7130F0;      /* só dentro do gradiente */
+  --pv-violeta-abissal:#0C0613;
+  --pv-superficie-noturna:#16102A;
+  --pv-nevoa:#F4F1FA;
+  --pv-grafite-tinta:#140A22;
+
+  /* Gradiente assinatura "Fluxo Prime" */
+  --pv-fluxo-prime:linear-gradient(135deg,#7130F0,#9109DF,#DC1FFF); /* @kind other */
+  --pv-fluxo-prime-vertical:linear-gradient(180deg,#7130F0,#9109DF,#DC1FFF); /* @kind other */
+
+  /* Derivados por transparência (nunca novos hex) */
+  --pv-violeta-12:rgba(145,9,223,.12);
+  --pv-violeta-24:rgba(145,9,223,.24);
+  --pv-magenta-12:rgba(220,31,255,.12);
+  --pv-magenta-24:rgba(220,31,255,.24);
+  --pv-tinta-08:rgba(20,10,34,.08);
+  --pv-tinta-16:rgba(20,10,34,.16);
+  --pv-tinta-64:rgba(20,10,34,.64);
+  --pv-nevoa-08:rgba(244,241,250,.08);
+  --pv-nevoa-16:rgba(244,241,250,.16);
+  --pv-nevoa-64:rgba(244,241,250,.64);
+
+  /* Semânticos — tema claro (padrão) */
+  --surface-page:var(--pv-nevoa);
+  --surface-card:#FFFFFF;
+  --surface-sunken:rgba(20,10,34,.04);
+  --surface-inverse:var(--pv-violeta-abissal);
+  --border-hairline:var(--pv-tinta-08);
+  --border-strong:var(--pv-tinta-16);
+  --text-title:var(--pv-grafite-tinta);
+  --text-body:var(--pv-tinta-64);
+  --text-quiet:rgba(20,10,34,.48);
+  --text-on-accent:#FFFFFF;
+  --text-on-inverse:var(--pv-nevoa);
+  --focus-ring:var(--pv-violeta-prime);
+
+  /* Acento — REGRA: uma peça usa UM acento. Violeta é o default;
+     data-accent="magenta" troca a peça inteira para Magenta Sinal. */
+  --accent:var(--pv-violeta-prime);
+  --accent-hover:#7A07BC;
+  --accent-press:#63069A;
+  --accent-wash:var(--pv-violeta-12);
+  --accent-ring:var(--pv-violeta-24);
+}
+[data-accent="magenta"]{
+  --accent:var(--pv-magenta-sinal);
+  --accent-hover:#C41BE3;
+  --accent-press:#A716C2;
+  --accent-wash:var(--pv-magenta-12);
+  --accent-ring:var(--pv-magenta-24);
+  --focus-ring:var(--pv-magenta-sinal);
+}
+[data-theme="dark"]{
+  --surface-page:var(--pv-violeta-abissal);
+  --surface-card:var(--pv-superficie-noturna);
+  --surface-sunken:rgba(244,241,250,.04);
+  --surface-inverse:var(--pv-nevoa);
+  --border-hairline:var(--pv-nevoa-08);
+  --border-strong:var(--pv-nevoa-16);
+  --text-title:var(--pv-nevoa);
+  --text-body:var(--pv-nevoa-64);
+  --text-quiet:rgba(244,241,250,.48);
+  --text-on-inverse:var(--pv-grafite-tinta);
+}

@@ -1,0 +1,12 @@
+:root{
+  --r-xs:6px; --r-sm:10px; --r-md:14px; --r-lg:20px; --r-xl:28px; --r-pill:999px;
+  --r-squircle:22%; /* @kind radius */  /* raio do monograma PV — proporção 1:1 */
+
+  /* Elevação discreta: sem sombra pesada, sem 3D, sem chrome */
+  --e-0:none; /* @kind shadow */
+  --e-1:0 1px 2px rgba(20,10,34,.06);
+  --e-2:0 6px 20px rgba(20,10,34,.08);
+  --e-accent:0 8px 28px rgba(145,9,223,.18);
+  --border-w:1px; /* @kind spacing */
+  --hairline:var(--border-w) solid var(--border-hairline); /* @kind other */
+}

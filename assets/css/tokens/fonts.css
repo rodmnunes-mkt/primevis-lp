@@ -1,0 +1,5 @@
+/* PrimeVis — famílias tipográficas.
+   Substituição sinalizada: sem arquivos de fonte fornecidos, as três famílias
+   são carregadas do Google Fonts (Outfit, Instrument Sans, Geist Mono).
+   Se você tiver os binários licenciados, troque estes @import por @font-face locais. */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap");
