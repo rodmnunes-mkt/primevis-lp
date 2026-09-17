@@ -1,0 +1,73 @@
+/* Banner informativo de privacidade — fixo na base da tela, só aviso,
+   não controla nenhum script. O Meta Pixel já roda independente disso. */
+.pv-banner{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;
+  display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;
+  padding:14px 20px;
+  background:#16102A;border-top:1px solid rgba(244,241,250,.14);
+  box-shadow:0 -6px 20px rgba(0,0,0,.28);
+}
+.pv-banner p{
+  margin:0;font-family:'Instrument Sans',system-ui,sans-serif;
+  font-size:13px;line-height:1.5;color:rgba(244,241,250,.72);
+  max-width:64ch;text-align:center;
+}
+.pv-banner a{color:#DC1FFF;text-decoration:underline;text-underline-offset:2px}
+.pv-banner a:hover{color:#F4F1FA}
+.pv-banner-close{
+  flex:0 0 auto;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;
+  background:transparent;border:1px solid rgba(244,241,250,.24);border-radius:999px;
+  color:rgba(244,241,250,.72);font-size:15px;line-height:1;cursor:pointer;
+}
+.pv-banner-close:hover{color:#F4F1FA;border-color:rgba(244,241,250,.44)}
+.pv-banner[hidden]{display:none}
+@media (max-width:600px){
+  .pv-banner{padding:12px 16px}
+  .pv-banner p{font-size:12px;text-align:left}
+}
+
+/* Tipografia das páginas legais (Privacidade, Cookies, Termos). */
+.pv-legal-nav{
+  display:block;margin:0 0 32px;
+  font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.04em;
+  color:rgba(244,241,250,.64);
+}
+.pv-legal-nav a{color:rgba(244,241,250,.64)}
+.pv-legal-nav a:hover{color:#DC1FFF}
+
+.pv-legal h1{
+  font-family:'Outfit',system-ui,sans-serif;font-weight:700;
+  font-size:clamp(30px,4vw,44px);line-height:1.1;letter-spacing:-.02em;
+  color:#F4F1FA;margin:0 0 12px;text-wrap:balance;
+}
+.pv-legal-meta{
+  font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.04em;
+  color:rgba(244,241,250,.44);margin:0 0 48px;
+}
+.pv-legal-meta a{color:rgba(244,241,250,.44);text-decoration:underline}
+
+.pv-legal p{
+  font-family:'Instrument Sans',system-ui,sans-serif;font-size:16px;line-height:1.65;
+  color:rgba(244,241,250,.78);margin:0 0 18px;max-width:72ch;
+}
+.pv-legal h2{
+  font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:22px;line-height:1.2;
+  letter-spacing:-.01em;color:#F4F1FA;
+  margin:48px 0 16px;padding-top:32px;border-top:1px solid rgba(244,241,250,.12);
+}
+.pv-legal h2:first-of-type{margin-top:0;padding-top:0;border-top:0}
+.pv-legal h3{
+  font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:17px;
+  color:#F4F1FA;margin:24px 0 10px;
+}
+.pv-legal ul,.pv-legal ol{
+  margin:0 0 18px;padding-left:22px;max-width:72ch;
+  font-family:'Instrument Sans',system-ui,sans-serif;font-size:16px;line-height:1.65;
+  color:rgba(244,241,250,.78);
+}
+.pv-legal li{margin:0 0 8px}
+.pv-legal li::marker{color:#DC1FFF}
+.pv-legal strong{color:#F4F1FA;font-weight:700}
+.pv-legal a{color:#DC1FFF;text-decoration:underline;text-underline-offset:2px}
+.pv-legal a:hover{color:#F4F1FA}
+.pv-legal [data-legal]{color:#F4F1FA}

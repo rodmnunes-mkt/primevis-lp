@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="assets/css/tokens/shape.css">
 <link rel="stylesheet" href="assets/css/tokens/motion.css">
 <link rel="stylesheet" href="assets/css/styles.css">
+<link rel="stylesheet" href="assets/css/legal.css">
 
 <style>
 :root{
@@ -460,8 +461,12 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.04em;color:rgba(244,241,250,.44)">Páginas de conversão para clínicas</span>
 </span>
 </div>
-<div class="pv-footer-legal" style="display:grid;gap:8px;justify-items:center;text-align:center">
-<a href="#" style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.44)">POLÍTICA DE PRIVACIDADE</a>
+<div class="pv-footer-legal" style="display:grid;gap:10px;justify-items:center;text-align:center">
+<div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
+<a href="politica-de-privacidade.html" style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.44)">POLÍTICA DE PRIVACIDADE</a>
+<a href="termos-de-uso.html" style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.44)">TERMOS DE USO</a>
+<a href="politica-de-cookies.html" style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.44)">POLÍTICA DE COOKIES</a>
+</div>
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.04em;color:rgba(244,241,250,.32)">© 2026 PrimeVis. Todos os direitos reservados.</span>
 </div>
 <div class="pv-footer-social" style="display:grid;gap:10px;justify-items:end;text-align:right">
@@ -473,9 +478,27 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 </div>
 </footer>
 
+<div id="pv-banner" class="pv-banner">
+<p>Este site usa o <strong>Meta Pixel</strong> para medir visitas e otimizar campanhas de anúncio. Saiba mais na <a href="politica-de-privacidade.html">Política de Privacidade</a>.</p>
+<button type="button" class="pv-banner-close" id="pv-banner-close" aria-label="Fechar aviso">✕</button>
+</div>
+
 </div>
 
 <script>
+(function () {
+  var KEY = 'pv_privacy_banner_dismissed';
+  var banner = document.getElementById('pv-banner');
+  var closeBtn = document.getElementById('pv-banner-close');
+  try {
+    if (localStorage.getItem(KEY) === '1') banner.hidden = true;
+  } catch (e) {}
+  closeBtn.addEventListener('click', function () {
+    banner.hidden = true;
+    try { localStorage.setItem(KEY, '1'); } catch (e) {}
+  });
+})();
+
 (function () {
   document.querySelectorAll('[data-accordion]').forEach(function (group) {
     var triggers = group.querySelectorAll('.pv-accordion-trigger');
