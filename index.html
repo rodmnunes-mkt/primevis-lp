@@ -85,8 +85,11 @@ a:hover{color:#F4F1FA}
 .pv-btn-gradient:hover{background-position:100% 50%;color:var(--pv-nevoa)}
 .pv-btn:active{transform:var(--press)}
 
-.pv-accordion{display:grid;gap:var(--s-3)}
-.pv-accordion-item{border:1px solid var(--pv-nevoa-16);border-radius:var(--r-md);overflow:hidden}
+/* Cada coluna do FAQ calcula a própria altura pelo próprio conteúdo —
+   align-self/height explícitos aqui garantem isso mesmo se o
+   align-items:start do grid pai (#perguntas) for alterado depois. */
+.pv-accordion{display:grid;gap:var(--s-3);align-self:start;height:fit-content}
+.pv-accordion-item{border:1px solid var(--pv-nevoa-16);border-radius:var(--r-md);overflow:hidden;align-self:start;height:fit-content}
 .pv-accordion-trigger{width:100%;min-height:var(--s-10);display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);padding:var(--s-5) var(--s-6);background:transparent;border:0;cursor:pointer;text-align:left;font-family:var(--font-display);font-weight:600;font-size:var(--t-h4);letter-spacing:-.01em;color:var(--pv-nevoa)}
 .pv-accordion-trigger svg{flex:0 0 auto;color:#DC1FFF;transition:transform var(--dur-2) var(--ease-decide),filter var(--dur-2) var(--ease-out)}
 .pv-accordion-trigger[aria-expanded="true"] svg{transform:rotate(180deg)}
@@ -428,7 +431,7 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent,#9109DF)">06 — Perguntas frequentes</span>
 <h2 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:clamp(26px,2.8vw,38px);line-height:1.1;letter-spacing:-.02em;margin:0;max-width:24ch;text-wrap:balance">O que donos e donas de clínica fazem antes de fechar</h2>
 </div>
-<div style="display:grid;grid-template-columns:var(--pv-faq-cols);gap:24px;align-items:start">
+<div style="display:grid;grid-template-columns:var(--pv-faq-cols);gap:24px;align-items:start;align-content:start">
 
 <div class="pv-accordion" data-accordion>
 <div class="pv-accordion-item">
