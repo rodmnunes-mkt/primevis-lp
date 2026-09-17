@@ -93,10 +93,18 @@ a:hover{color:#F4F1FA}
 .pv-accordion-panel{padding:0 var(--s-6) var(--s-5);font-family:var(--font-body);font-size:var(--t-body-sm);line-height:var(--lh-body);color:var(--pv-nevoa-64)}
 .pv-accordion-panel[hidden]{display:none}
 
+/* Badge dos 3 módulos editoriais do bloco "Prova" — mesma linguagem
+   magenta dos badges de etapa, num tamanho menor (é um acento, não o
+   protagonista da coluna). */
+.pv-prova-badge{
+  width:34px;height:34px;flex:0 0 34px;border-radius:999px;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:rgba(220,31,255,.12);border:1px solid rgba(220,31,255,.28);
+}
 .pv-prova-col-a,.pv-prova-col-b,.pv-prova-col-c{display:grid;gap:12px;align-content:start}
 .pv-prova-col-a{padding-right:40px}
-.pv-prova-col-b{padding:0 40px;border-left:1px solid rgba(244,241,250,.12)}
-.pv-prova-col-c{padding-left:40px;border-left:1px solid rgba(244,241,250,.12)}
+.pv-prova-col-b{padding:0 40px;border-left:1px solid rgba(220,31,255,.16)}
+.pv-prova-col-c{padding-left:40px;border-left:1px solid rgba(220,31,255,.16)}
 
 .pv-footer-inner{flex-wrap:wrap}
 
@@ -126,7 +134,7 @@ a:hover{color:#F4F1FA}
     --pv-box-pad:28px;
   }
   .pv-prova-col-a,.pv-prova-col-b,.pv-prova-col-c{padding:0}
-  .pv-prova-col-b,.pv-prova-col-c{border-left:0;border-top:1px solid rgba(244,241,250,.12);padding-top:28px}
+  .pv-prova-col-b,.pv-prova-col-c{border-left:0;border-top:1px solid rgba(220,31,255,.16);padding-top:28px}
   .pv-footer-inner{justify-content:center;text-align:center}
   .pv-footer-legal{justify-items:center}
   .pv-footer-social{justify-items:center;text-align:center}
@@ -373,19 +381,22 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 </div>
 <div style="background:#16102A;border:1px solid rgba(244,241,250,.08);border-radius:28px;padding:var(--pv-box-pad);display:grid;grid-template-columns:var(--pv-prova-cols)">
 <div class="pv-prova-col-a">
-<span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.44)">O QUE SE OBSERVA</span>
-<p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.86);margin:0">Quem já é paciente indica sem pensar duas vezes. Quem nunca ouviu falar da clínica chega em silêncio, sem nenhum sinal de confiança.</p>
-<p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.64);margin:0">Por isso a primeira etapa existe: preparar a clínica pra esse desconhecido.</p>
+<span class="pv-prova-badge" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC1FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></span>
+<span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.62)">O QUE SE OBSERVA</span>
+<p style="font-size:16px;line-height:1.55;color:#F4F1FA;font-weight:500;margin:0">Quem já é paciente indica sem pensar duas vezes. Quem nunca ouviu falar da clínica chega em silêncio, sem nenhum sinal de confiança.</p>
+<p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.68);margin:0">Por isso a primeira etapa existe: preparar a clínica pra esse desconhecido.</p>
 </div>
 <div class="pv-prova-col-b">
-<span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.44)">O QUE SE REPETE</span>
-<p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.86);margin:0">Entre encontrar o nome da clínica e decidir marcar, esse desconhecido procura algum sinal de que outras pessoas já confiaram antes.</p>
-<p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.64);margin:0">Por isso a prova fica no meio do caminho, onde a dúvida nasce.</p>
+<span class="pv-prova-badge" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC1FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.343-5.657"/><path d="M20 4v5h-5"/></svg></span>
+<span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.62)">O QUE SE REPETE</span>
+<p style="font-size:16px;line-height:1.55;color:#F4F1FA;font-weight:500;margin:0">Entre encontrar o nome da clínica e decidir marcar, esse desconhecido procura algum sinal de que outras pessoas já confiaram antes.</p>
+<p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.68);margin:0">Por isso a prova fica no meio do caminho, onde a dúvida nasce.</p>
 </div>
 <div class="pv-prova-col-c">
-<span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.44)">O QUE SE CONFIRMA</span>
-<p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.86);margin:0">Quando a mensagem chega no WhatsApp, o que confirma se a clínica estava pronta é o quanto esse desconhecido já sabe sobre o que vai encontrar.</p>
-<p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.64);margin:0">Por isso a última etapa fecha o caminho: contexto antes da primeira palavra.</p>
+<span class="pv-prova-badge" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC1FFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg></span>
+<span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.62)">O QUE SE CONFIRMA</span>
+<p style="font-size:16px;line-height:1.55;color:#F4F1FA;font-weight:500;margin:0">Quando a mensagem chega no WhatsApp, o que confirma se a clínica estava pronta é o quanto esse desconhecido já sabe sobre o que vai encontrar.</p>
+<p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.68);margin:0">Por isso a última etapa fecha o caminho: contexto antes da primeira palavra.</p>
 </div>
 </div>
 <div style="display:grid;gap:16px;justify-items:center;text-align:center;padding-top:8px">
