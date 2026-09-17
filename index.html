@@ -46,7 +46,6 @@ body{margin:0;background:#0C0613}
 a{color:#DC1FFF;text-decoration:none}
 a:hover{color:#F4F1FA}
 @keyframes pv-trace-x{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-#perguntas button[aria-expanded="true"]>svg{color:#DC1FFF !important}
 
 /* Badge de sintoma: rastro que enfraquece e some — símbolo proprietário
    pra "perda invisível", substitui o espaço vazio que existia sob o
@@ -88,8 +87,9 @@ a:hover{color:#F4F1FA}
 .pv-accordion{display:grid;gap:var(--s-3)}
 .pv-accordion-item{border:1px solid var(--pv-nevoa-16);border-radius:var(--r-md);overflow:hidden}
 .pv-accordion-trigger{width:100%;min-height:var(--s-10);display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);padding:var(--s-5) var(--s-6);background:transparent;border:0;cursor:pointer;text-align:left;font-family:var(--font-display);font-weight:600;font-size:var(--t-h4);letter-spacing:-.01em;color:var(--pv-nevoa)}
-.pv-accordion-trigger svg{flex:0 0 auto;color:var(--pv-nevoa-64);transition:transform var(--dur-2) var(--ease-decide)}
+.pv-accordion-trigger svg{flex:0 0 auto;color:#DC1FFF;transition:transform var(--dur-2) var(--ease-decide),filter var(--dur-2) var(--ease-out)}
 .pv-accordion-trigger[aria-expanded="true"] svg{transform:rotate(180deg)}
+.pv-accordion-trigger:hover svg{filter:brightness(1.15)}
 .pv-accordion-panel{padding:0 var(--s-6) var(--s-5);font-family:var(--font-body);font-size:var(--t-body-sm);line-height:var(--lh-body);color:var(--pv-nevoa-64)}
 .pv-accordion-panel[hidden]{display:none}
 
