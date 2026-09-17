@@ -36,7 +36,8 @@
   --pv-timeline-gap:32px;
   --pv-sticky-pos:sticky;
   --pv-sticky-top:40px;
-  --pv-quote-pad:56px 40px;
+  --pv-quote-pad:44px 40px;
+  --pv-quote-width:900px;
   --pv-box-pad:40px;
   --pv-nav-gap:32px;
   --pv-nav-fs:15px;
@@ -131,6 +132,7 @@ a:hover{color:#F4F1FA}
     --pv-sticky-pos:static;
     --pv-sticky-top:0;
     --pv-quote-pad:40px 28px;
+    --pv-quote-width:30ch;
     --pv-box-pad:28px;
   }
   .pv-prova-col-a,.pv-prova-col-b,.pv-prova-col-c{padding:0}
@@ -265,7 +267,7 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 <p style="font-size:17px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;max-width:56ch;text-wrap:pretty">Pode ser preço, pode ser distância, pode ser a primeira impressão que a página passa depois do clique. A causa muda de clínica pra clínica. O que não muda é a pergunta: seu Google e sua página respondem hoje quem já decidiu marcar, ou também quem está decidindo agora, sem te conhecer?</p>
 </div>
 <div style="grid-column:1 / -1;background:#16102A;border:1px solid rgba(244,241,250,.08);border-radius:28px;box-shadow:0 6px 20px rgba(0,0,0,.24);padding:var(--pv-quote-pad);display:grid;place-items:center">
-<p style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:clamp(22px,2.2vw,30px);line-height:1.22;letter-spacing:-.02em;color:#F4F1FA;margin:0;max-width:30ch;text-align:center;text-wrap:balance">É esse intervalo, entre <span style="color:#DC1FFF">ser encontrada</span> e <span style="color:#DC1FFF">ser escolhida</span>, que o Método Ponto de Decisão foi construído para resolver.</p>
+<p style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:clamp(22px,2.2vw,30px);line-height:1.22;letter-spacing:-.02em;color:#F4F1FA;margin:0;max-width:var(--pv-quote-width);text-align:center;text-wrap:balance">É esse intervalo, entre <span style="color:#DC1FFF">ser encontrada</span> e <span style="color:#DC1FFF">ser escolhida</span>, que o Método Ponto de Decisão foi construído para resolver.</p>
 </div>
 </div>
 </section>
