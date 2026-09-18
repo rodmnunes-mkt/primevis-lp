@@ -526,27 +526,9 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 </div>
 </footer>
 
-<div id="pv-banner" class="pv-banner">
-<p>Este site usa o <strong>Meta Pixel</strong> para medir visitas e otimizar campanhas de anúncio. Saiba mais na <a href="politica-de-privacidade.html">Política de Privacidade</a>.</p>
-<button type="button" class="pv-banner-close" id="pv-banner-close" aria-label="Fechar aviso">✕</button>
-</div>
-
 </div>
 
 <script>
-(function () {
-  var KEY = 'pv_privacy_banner_dismissed';
-  var banner = document.getElementById('pv-banner');
-  var closeBtn = document.getElementById('pv-banner-close');
-  try {
-    if (localStorage.getItem(KEY) === '1') banner.hidden = true;
-  } catch (e) {}
-  closeBtn.addEventListener('click', function () {
-    banner.hidden = true;
-    try { localStorage.setItem(KEY, '1'); } catch (e) {}
-  });
-})();
-
 (function () {
   document.querySelectorAll('[data-accordion]').forEach(function (group) {
     var triggers = group.querySelectorAll('.pv-accordion-trigger');

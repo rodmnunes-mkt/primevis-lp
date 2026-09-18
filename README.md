@@ -43,20 +43,16 @@ funciona, mas um servidor evita eventuais restrições do navegador para caminho
 ## Meta Pixel
 
 O Pixel (`692402367298918`) está no `<head>` de **todas as 4 páginas** (`index.html` e as 3
-páginas legais) e dispara `PageView` automaticamente no carregamento — sem esperar nenhuma
-interação com o banner de aviso. Os três botões de CTA de `index.html` (Hero, bloco "Padrão que
-sustenta o método" e CTA final) disparam o evento `Lead` no clique, todos com a guarda
-`typeof window.fbq === 'function'` para não quebrar a página caso o Pixel não carregue
-(bloqueadores de anúncio, falha de rede, etc.). O banner de privacidade no rodapé da tela é
-puramente informativo: fechá-lo (ou não) não afeta o Pixel em nada — ele já roda antes de
-qualquer interação.
+páginas legais) e dispara `PageView` automaticamente no carregamento. Os três botões de CTA de
+`index.html` (Hero, bloco "Padrão que sustenta o método" e CTA final) disparam o evento `Lead`
+no clique, todos com a guarda `typeof window.fbq === 'function'` para não quebrar a página caso
+o Pixel não carregue (bloqueadores de anúncio, falha de rede, etc.).
 
-## Páginas legais e o banner de privacidade
+## Páginas legais
 
 O rodapé de todas as páginas linka para três páginas legais (Política de Privacidade, Política
-de Cookies e Termos de Uso), e um banner fixo na base da tela avisa sobre o uso do Meta Pixel,
-com link para a Política de Privacidade. O banner tem só um botão de fechar (✕) — não existe
-"Aceitar"/"Recusar" porque ele não controla nenhum script.
+de Cookies e Termos de Uso). A transparência sobre o uso do Meta Pixel fica documentada na
+Política de Privacidade — não há mais um banner fixo na tela avisando sobre isso.
 
 ### Substituindo os dados jurídicos (placeholders)
 
