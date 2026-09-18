@@ -12,15 +12,20 @@ termos-de-uso.html             página legal — Termos de Uso
 assets/
   css/
     styles.css           agrega os tokens de design (@import)
-    legal.css             banner de aviso + tipografia das páginas legais
+    legal.css             tipografia das páginas legais
     tokens/               design tokens: cores, tipografia, espaçamento, forma, motion, fontes
   js/
     legal-config.js       ÚNICO arquivo com os dados jurídicos (placeholders) — ver seção abaixo
     legal-fill.js          aplica legal-config.js nas 3 páginas legais, sem precisar editá-las
+    capi-relay.js          envia PageView/Lead ao Worker da Conversions API — ver seção "Meta Pixel"
   img/
     logo-primevis.png
     hero-ponto-decisao.webp
     rodrigo.jpg
+    favicon-32.png, favicon-source-512.png, apple-touch-icon.png
+cloudflare-worker/
+  meta-capi-relay.js     código de referência do Worker (roda de verdade no painel do Cloudflare)
+  README-capi.md          passo a passo de configuração — ver seção "Meta Pixel"
 ```
 
 Tudo estático — sem framework, sem build, sem base de dados. As 4 páginas HTML são arquivos
@@ -47,6 +52,13 @@ páginas legais) e dispara `PageView` automaticamente no carregamento. Os três 
 `index.html` (Hero, bloco "Padrão que sustenta o método" e CTA final) disparam o evento `Lead`
 no clique, todos com a guarda `typeof window.fbq === 'function'` para não quebrar a página caso
 o Pixel não carregue (bloqueadores de anúncio, falha de rede, etc.).
+
+Além do Pixel do navegador, `assets/js/capi-relay.js` envia o mesmo PageView/Lead (com o mesmo
+`event_id`, para a Meta deduplicar) para um Cloudflare Worker em `capi.primevis.com.br`, que
+retransmite à Meta Conversions API server-side. O site continua 100% estático — o Worker é a
+única peça de servidor, e o token de acesso da API fica guardado como secret só dentro do
+Cloudflare, nunca neste repositório. Ver **[`cloudflare-worker/README-capi.md`](cloudflare-worker/README-capi.md)**
+para o setup completo.
 
 ## Páginas legais
 

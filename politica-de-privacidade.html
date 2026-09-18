@@ -27,6 +27,7 @@ a:hover{color:#F4F1FA}
 </style>
 
 <!-- Meta Pixel Code -->
+<script src="assets/js/capi-relay.js"></script>
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -37,7 +38,9 @@ t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '692402367298918');
-fbq('track', 'PageView');
+var pvPageViewId = window.PV_CAPI.genId('pv');
+fbq('track', 'PageView', {}, {eventID: pvPageViewId});
+window.PV_CAPI.send('PageView', pvPageViewId);
 </script>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
