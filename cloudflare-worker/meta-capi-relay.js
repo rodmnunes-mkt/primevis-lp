@@ -63,6 +63,13 @@ export default {
         user_data: userData
       }]
     };
+    // Variável comum (não-secreta) usada só durante testes no "Testar eventos"
+    // do Gerenciador de Eventos. Deixe sem configurar (ou vazia) em produção —
+    // com test_event_code preenchido a Meta trata o evento como simulado e
+    // ele não entra nas métricas reais de anúncio.
+    if (env.META_TEST_EVENT_CODE) {
+      payload.test_event_code = env.META_TEST_EVENT_CODE;
+    }
 
     const metaRes = await fetch(
       `https://graph.facebook.com/v21.0/${PIXEL_ID}/events?access_token=${env.META_CAPI_TOKEN}`,
