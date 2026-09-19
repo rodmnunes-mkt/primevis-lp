@@ -7,18 +7,28 @@
 <meta name="description" content="O Método Ponto de Decisão™ é o sistema de três etapas da PrimeVis que leva quem nunca ouviu falar da sua clínica até a mensagem no WhatsApp.">
 <meta name="facebook-domain-verification" content="lxr6i60ldbvtbbevz884ktgpbvo88e" />
 <meta name="robots" content="noindex, nofollow">
+
+<!-- Fontes: preconnect antecipa a conexão, o preload do peso 700 do Outfit
+     (usado no H1 acima da dobra) adianta o download da fonte principal do
+     hero, e o link com media="print"+onload carrega o CSS do Google Fonts
+     sem bloquear a renderização (troca pra "all" só depois de baixado). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="https://fonts.gstatic.com/s/outfit/v15/QGYvz_MVcBeNP4NJtEtq.woff2">
+<link rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"></noscript>
+
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
 <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-source-512.png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 
-<link rel="stylesheet" href="assets/css/tokens/fonts.css">
 <link rel="stylesheet" href="assets/css/tokens/colors.css">
 <link rel="stylesheet" href="assets/css/tokens/typography.css">
 <link rel="stylesheet" href="assets/css/tokens/spacing.css">
 <link rel="stylesheet" href="assets/css/tokens/shape.css">
 <link rel="stylesheet" href="assets/css/tokens/motion.css">
-<link rel="stylesheet" href="assets/css/styles.css">
-<link rel="stylesheet" href="assets/css/legal.css">
 
 <style>
 :root{
@@ -197,7 +207,7 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 
 <header style="padding:24px">
 <div class="pv-header-inner" style="max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px">
-<span style="display:inline-flex;align-items:center;gap:10px"><img src="assets/img/logo-primevis.png" alt="PrimeVis" width="28" height="28" style="display:block;width:28px;height:28px;border-radius:22%"><span style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:21px;letter-spacing:-.03em">Prime<span style="background-image:linear-gradient(96deg,#C112F0 0%,#DC1FFF 44%,#A683FF 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#DC1FFF">Vis</span></span></span>
+<span style="display:inline-flex;align-items:center;gap:10px"><img src="assets/img/logo-primevis-128.webp" alt="PrimeVis" width="28" height="28" style="display:block;width:28px;height:28px;border-radius:22%"><span style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:21px;letter-spacing:-.03em">Prime<span style="background-image:linear-gradient(96deg,#C112F0 0%,#DC1FFF 44%,#A683FF 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#DC1FFF">Vis</span></span></span>
 <nav class="pv-nav" style="display:flex;align-items:center;gap:var(--pv-nav-gap)">
 <a href="#metodo" style="font-size:var(--pv-nav-fs);font-weight:500;color:rgba(244,241,250,.64)">O método</a>
 <a href="#funciona" style="font-size:var(--pv-nav-fs);font-weight:500;color:rgba(244,241,250,.64)">Como funciona</a>
@@ -216,7 +226,7 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 <span style="font-size:14px;color:rgba(244,241,250,.44);line-height:1.6">Conversa direta pelo WhatsApp, sem formulário no meio.</span>
 </div>
 </div>
-<img src="assets/img/hero-ponto-decisao.webp" alt="Caminho de luz com um ponto de decisão iluminado entre a busca, a prova de confiança e o contato" style="display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:20px">
+<img src="assets/img/hero-ponto-decisao.webp" srcset="assets/img/hero-ponto-decisao-640.webp 640w, assets/img/hero-ponto-decisao.webp 1254w" sizes="(max-width:1024px) 100vw, 480px" fetchpriority="high" alt="Caminho de luz com um ponto de decisão iluminado entre a busca, a prova de confiança e o contato" style="display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:20px">
 </div>
 </section>
 
@@ -422,7 +432,7 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 
 <section style="color:#F4F1FA;padding:var(--pv-section-y) 24px">
 <div style="max-width:1160px;margin:0 auto;display:grid;grid-template-columns:var(--pv-sobre-cols);gap:var(--pv-gap-xl);align-items:start">
-<img class="pv-sobre-img" src="assets/img/rodrigo.jpg" alt="Rodrigo, fundador da PrimeVis" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 22%;border-radius:20px">
+<img class="pv-sobre-img" src="assets/img/rodrigo.webp" srcset="assets/img/rodrigo-480.webp 480w, assets/img/rodrigo.webp 900w" sizes="(max-width:1024px) 100vw, 400px" loading="lazy" decoding="async" alt="Rodrigo, fundador da PrimeVis" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 22%;border-radius:20px">
 <div class="pv-sobre-text" style="display:grid;gap:24px">
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent,#9109DF)">05 — Quem faz</span>
 <h2 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:clamp(26px,2.6vw,34px);line-height:1.12;letter-spacing:-.02em;margin:0;max-width:26ch;text-wrap:balance">Meu nome é <span style="color:var(--accent,#9109DF)">Rodrigo</span>, fundador da PrimeVis.</h2>
@@ -510,7 +520,7 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 <footer style="padding:0 24px 56px">
 <div class="pv-footer-inner" style="max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px;border-top:1px solid rgba(244,241,250,.12);padding-top:24px">
 <div style="display:flex;align-items:center;gap:12px">
-<img src="assets/img/logo-primevis.png" alt="PrimeVis" width="34" height="34" style="display:block;width:34px;height:34px;border-radius:22%">
+<img src="assets/img/logo-primevis-128.webp" alt="PrimeVis" width="34" height="34" style="display:block;width:34px;height:34px;border-radius:22%">
 <span style="display:grid;gap:6px">
 <span style="font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:19px;letter-spacing:-.03em;color:#F4F1FA">Prime<span style="background-image:linear-gradient(96deg,#C112F0 0%,#DC1FFF 44%,#A683FF 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#DC1FFF">Vis</span></span>
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.04em;color:rgba(244,241,250,.44)">Páginas de conversão para clínicas</span>

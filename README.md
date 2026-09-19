@@ -11,17 +11,17 @@ politica-de-cookies.html       página legal — Política de Cookies
 termos-de-uso.html             página legal — Termos de Uso
 assets/
   css/
-    styles.css           agrega os tokens de design (@import)
     legal.css             tipografia das páginas legais
-    tokens/               design tokens: cores, tipografia, espaçamento, forma, motion, fontes
+    tokens/               design tokens: cores, tipografia, espaçamento, forma, motion
+                           (fontes não ficam mais aqui — ver "Performance" abaixo)
   js/
     legal-config.js       ÚNICO arquivo com os dados jurídicos (placeholders) — ver seção abaixo
     legal-fill.js          aplica legal-config.js nas 3 páginas legais, sem precisar editá-las
     capi-relay.js          envia PageView/Lead ao Worker da Conversions API — ver seção "Meta Pixel"
   img/
-    logo-primevis.png
-    hero-ponto-decisao.webp
-    rodrigo.jpg
+    logo-primevis.png, logo-primevis-128.webp        (a -128 é a servida nas páginas)
+    hero-ponto-decisao.webp, hero-ponto-decisao-640.webp   (fonte + variante mobile)
+    rodrigo.jpg, rodrigo.webp, rodrigo-480.webp             (fonte + variantes servidas)
     favicon-32.png, favicon-source-512.png, apple-touch-icon.png
 cloudflare-worker/
   meta-capi-relay.js     código de referência do Worker (roda de verdade no painel do Cloudflare)
@@ -44,6 +44,39 @@ python -m http.server 4173
 
 Depois abra `http://localhost:4173`. Abrir `index.html` direto do disco (`file://`) também
 funciona, mas um servidor evita eventuais restrições do navegador para caminhos relativos.
+
+## Performance
+
+Ajustado em 2026-09-19 pra tirar o score mobile do PageSpeed Insights de 72 pra 90+, sem alterar
+conteúdo, texto ou estrutura visual. Pontos que valem saber se for mexer no `<head>` ou nas
+imagens de novo:
+
+- **Fontes do Google Fonts**: carregadas via `<link rel="stylesheet" media="print" onload="this.media='all'">`
+  em vez de `@import` dentro de CSS — isso evita que o download da fonte bloqueie a primeira
+  renderização. Tem `preconnect` pra `fonts.googleapis.com`/`fonts.gstatic.com`, e o `index.html`
+  ainda tem um `<link rel="preload" as="font">` apontando direto pro arquivo woff2 do Outfit peso
+  700 (usado no H1 do hero) — se o Google trocar a URL/hash desse arquivo no futuro, esse preload
+  só para de ajudar (não quebra nada), vale reconferir a URL em `fonts.googleapis.com/css2?family=Outfit...`.
+- **`assets/css/styles.css` e `assets/css/tokens/fonts.css` foram removidos**: o primeiro só
+  re-importava (via `@import`) os mesmos 6 arquivos de tokens que o HTML já carregava direto —
+  ou seja, cada página baixava e interpretava o CSS de tokens **duas vezes**, incluindo mais uma
+  chamada redundante ao Google Fonts. O segundo virou desnecessário depois que o carregamento de
+  fontes passou a ser feito direto no HTML (ponto acima).
+  Não recrie esses arquivos sem checar se algo já carrega o mesmo CSS por outro caminho.
+- **Imagens**: toda imagem em uso tem uma versão redimensionada pro tamanho real de exibição —
+  nunca subir um arquivo grande e encolher só via CSS. `logo-primevis-128.webp` (128px) é a
+  servida nas páginas porque a logo nunca aparece acima de 34px; os arquivos originais
+  (`logo-primevis.png`, `rodrigo.jpg`) ficam no repo como fonte, mas nenhuma página os referencia
+  mais. A imagem do hero (`hero-ponto-decisao.webp`) tem `fetchpriority="high"` e nenhum
+  `loading="lazy"`, porque é o LCP da página; a foto do Rodrigo (`rodrigo.webp`), abaixo da
+  dobra, tem `loading="lazy"`. Ambas usam `srcset`/`sizes` com uma variante menor pra mobile.
+- **Cache HTTP de ativos estáticos**: não configurado. O site é servido pelo GitHub Pages, que
+  não tem um arquivo de config de headers (tipo `_headers` da Netlify/Cloudflare Pages), e o
+  proxy do Cloudflare está deliberadamente desligado (`Somente DNS`) no CNAME de `lp` pra manter
+  o certificado do GitHub Pages funcionando — então não há hoje um ponto de controle pra
+  sobrescrever `Cache-Control`. Se isso vier a incomodar visitante recorrente, a opção é reativar
+  o proxy do Cloudflare nesse subdomínio (com os cuidados de SSL já documentados em
+  `cloudflare-worker/README-capi.md`) e usar Page Rules/Cache Rules de lá.
 
 ## Meta Pixel
 
