@@ -64,16 +64,36 @@ a:hover{color:#F4F1FA}
 
 /* Badge de sintoma: rastro que enfraquece e some — símbolo proprietário
    pra "perda invisível", substitui o espaço vazio que existia sob o
-   rótulo SINTOMA. Sem aparência de botão: fundo sutil, borda fina,
-   sem sombra, sem glow. */
+   rótulo SINTOMA. O círculo de fundo continua discreto (sem sombra, sem
+   glow); só o próprio risco pulsa com um brilho sutil, sincronizado com o
+   fade de opacidade já existente. */
 .pv-sintoma-badge{
   width:34px;height:34px;flex:0 0 34px;border-radius:999px;
   display:inline-flex;align-items:center;justify-content:center;
   background:#171025;border:1px solid rgba(166,131,255,.26);
 }
-.pv-sintoma-trail{animation:pv-sintoma-fade 3.6s ease-in-out infinite}
-@keyframes pv-sintoma-fade{0%,100%{opacity:.72}50%{opacity:1}}
+.pv-sintoma-trail{animation:pv-sintoma-fade 3.6s ease-in-out infinite;transform-origin:center}
+@keyframes pv-sintoma-fade{
+  0%,100%{opacity:.72;transform:scale(1);filter:brightness(1) drop-shadow(0 0 0 rgba(220,31,255,0))}
+  50%{opacity:1;transform:scale(1.22);filter:brightness(2.2) drop-shadow(0 0 6px #DC1FFF) drop-shadow(0 0 12px rgba(220,31,255,.9))}
+}
 @media (prefers-reduced-motion:reduce){.pv-sintoma-trail{animation:none}}
+
+/* Shimmer nas 2 palavras-chave da citação de fechamento do bloco "01"
+   ("ser encontrada" / "ser escolhida") — mesma técnica do componente
+   "Text Shimmer" do beUI (beui.dev/components/motion/text-animation):
+   gradiente de texto com uma faixa clara varrendo em loop via
+   background-position, sem framework, só a cor trocada pra paleta da
+   marca. Textos continuam legíveis mesmo em navegadores sem suporte a
+   background-clip:text (fallback: cor sólida via `color` no elemento). */
+.pv-text-shimmer{
+  background-image:linear-gradient(110deg,#DC1FFF 30%,#F4F1FA 50%,#DC1FFF 70%);
+  background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:pv-text-shimmer 2.6s linear infinite;
+}
+@keyframes pv-text-shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){.pv-text-shimmer{animation:none;-webkit-background-clip:unset;background-clip:unset;color:#DC1FFF;background-image:none}}
 
 /* Badges das 3 etapas do método: mesma linguagem magenta dos labels
    "ETAPA 0N" — fundo lavado, borda fina, sem sombra pesada, sem cara
@@ -123,6 +143,63 @@ a:hover{color:#F4F1FA}
 .pv-prova-col-a{padding-right:40px}
 .pv-prova-col-b{padding:0 40px;border-left:1px solid rgba(220,31,255,.16)}
 .pv-prova-col-c{padding-left:40px;border-left:1px solid rgba(220,31,255,.16)}
+
+/* Beam: brilho colorido girando na borda — recriado em CSS puro (sem React,
+   sem lib externa) a partir do "Border Beam" da libraries.dev, pra não
+   trazer framework nem build pro projeto. Duas camadas com o mesmo ângulo
+   animado: ::before é o brilho desfocado (o "neon"), ::after é o núcleo
+   nítido por cima (a "cabeça" de luz). `.pv-beam` é a base (funciona em
+   qualquer border-radius via `inherit`); `.pv-beam-soft` controla
+   intensidade e velocidade via custom properties. Cores na paleta da
+   marca (magenta → névoa clara), não arco-íris literal, pra combinar com
+   o resto do site. Usado só nas bolinhas/pílula dos blocos 02 e 04 — no
+   CTA foi trocado pelo `.pv-btn-sheen` abaixo (ver comentário lá). */
+@property --pv-beam-angle{syntax:'<angle>';initial-value:0deg;inherits:false}
+.pv-beam{position:relative}
+.pv-beam::before,.pv-beam::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:conic-gradient(from var(--pv-beam-angle),
+    transparent 0deg,
+    transparent calc(360deg - var(--pv-beam-arc,120deg)),
+    var(--pv-beam-c1,#DC1FFF) calc(360deg - var(--pv-beam-arc,120deg) * .45),
+    var(--pv-beam-c2,#F4F1FA) 359deg,
+    transparent 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  animation:pv-beam-spin var(--pv-beam-duration,3s) linear infinite;
+}
+.pv-beam::before{
+  padding:var(--pv-beam-glow-width,9px);
+  filter:blur(var(--pv-beam-blur,8px));
+  opacity:var(--pv-beam-glow-strength,.6);
+}
+.pv-beam::after{
+  padding:var(--pv-beam-width,2px);
+  opacity:var(--pv-beam-strength,1);
+}
+@keyframes pv-beam-spin{to{--pv-beam-angle:360deg}}
+@media (prefers-reduced-motion:reduce){.pv-beam::before,.pv-beam::after{animation:none}}
+.pv-beam-soft{--pv-beam-width:1.5px;--pv-beam-glow-width:6px;--pv-beam-blur:6px;--pv-beam-strength:.75;--pv-beam-glow-strength:.4;--pv-beam-duration:4s;--pv-beam-arc:100deg}
+
+/* Reflexo no CTA: um brilho reto atravessa o botão de vez em quando —
+   adaptado do "Metallic Button" do beUI (beui.dev/components/motion/button),
+   que tem um reflexo viajando continuamente sobre uma superfície cromada.
+   Aqui não trocamos a cor magenta/roxa da marca por cromado cinza — só a
+   mecânica do reflexo foi reaproveitada, puro CSS. Fica parado a maior
+   parte do ciclo e passa rápido, pra não competir com o texto do botão. */
+.pv-btn-sheen{position:relative;overflow:hidden;isolation:isolate}
+.pv-btn-sheen::before{
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(100deg,transparent 42%,rgba(255,255,255,.55) 50%,transparent 58%);
+  filter:blur(2px);
+  transform:translateX(-160%) skewX(-16deg);
+  animation:pv-btn-sheen-sweep 5s ease-in-out infinite;
+}
+@keyframes pv-btn-sheen-sweep{
+  0%,15%{transform:translateX(-160%) skewX(-16deg)}
+  45%,100%{transform:translateX(160%) skewX(-16deg)}
+}
+@media (prefers-reduced-motion:reduce){.pv-btn-sheen::before{animation:none;display:none}}
 
 .pv-footer-inner{flex-wrap:wrap}
 
@@ -222,7 +299,7 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 <h1 style="font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:clamp(36px,4.2vw,60px);line-height:1.04;letter-spacing:-.03em;margin:0;text-wrap:balance">A indicação sustenta sua agenda hoje.<br><span style="background:linear-gradient(135deg,#7130F0,#9109DF,#DC1FFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#DC1FFF">Quem faz ela crescer é quem nunca ouviu falar da sua clínica.</span></h1>
 <p style="font-size:19px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;max-width:56ch;text-wrap:pretty">O Método Ponto de Decisão™ é o sistema de três etapas da PrimeVis que leva esse desconhecido do primeiro clique até a mensagem no WhatsApp, com prova de confiança posicionada no meio do caminho.</p>
 <div style="display:grid;gap:16px;justify-items:center;text-align:center;padding-top:8px">
-<a href="https://wa.me/5541991811201?text=Oi%2C%20Rodrigo.%20Vim%20pela%20p%C3%A1gina%20e%20quero%20fazer%20o%20Teste%20do%20Desconhecido." target="_blank" rel="noopener" class="pv-btn pv-btn-gradient" data-pixel="lead">Fazer o Teste do Desconhecido</a>
+<a href="https://wa.me/5541991811201?text=Oi%2C%20Rodrigo.%20Vim%20pela%20p%C3%A1gina%20e%20quero%20fazer%20o%20Teste%20do%20Desconhecido." target="_blank" rel="noopener" class="pv-btn pv-btn-gradient pv-btn-sheen" data-pixel="lead">Fazer o Teste do Desconhecido</a>
 <span style="font-size:14px;color:rgba(244,241,250,.44);line-height:1.6">Conversa direta pelo WhatsApp, sem formulário no meio.</span>
 </div>
 </div>
@@ -290,7 +367,7 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 <p style="font-size:17px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;max-width:56ch;text-wrap:pretty">Pode ser preço, pode ser distância, pode ser a primeira impressão que a página passa depois do clique. A causa muda de clínica pra clínica. O que não muda é a pergunta: seu Google e sua página respondem hoje quem já decidiu marcar, ou também quem está decidindo agora, sem te conhecer?</p>
 </div>
 <div style="grid-column:1 / -1;background:#16102A;border:1px solid rgba(244,241,250,.08);border-radius:28px;box-shadow:0 6px 20px rgba(0,0,0,.24);padding:var(--pv-quote-pad);display:grid;place-items:center">
-<p style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:clamp(22px,2.2vw,30px);line-height:1.22;letter-spacing:-.02em;color:#F4F1FA;margin:0;max-width:var(--pv-quote-width);text-align:center;text-wrap:balance">É esse intervalo, entre <span style="color:#DC1FFF">ser encontrada</span> e <span style="color:#DC1FFF">ser escolhida</span>, que o Método Ponto de Decisão foi construído para resolver.</p>
+<p style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:clamp(22px,2.2vw,30px);line-height:1.22;letter-spacing:-.02em;color:#F4F1FA;margin:0;max-width:var(--pv-quote-width);text-align:center;text-wrap:balance">É esse intervalo, entre <span class="pv-text-shimmer">ser encontrada</span> e <span class="pv-text-shimmer">ser escolhida</span>, que o Método Ponto de Decisão foi construído para resolver.</p>
 </div>
 </div>
 </section>
@@ -306,17 +383,17 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 <div style="display:grid;grid-template-columns:var(--pv-steps-cols);gap:var(--pv-gap-steps)">
 <div style="background:#16102A;border:1px solid rgba(244,241,250,.08);border-radius:20px;padding:32px;box-shadow:0 1px 2px rgba(0,0,0,.24);display:grid;gap:12px;align-content:start">
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.08em;color:#DC1FFF">ETAPA 01</span>
-<h3 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:22px;line-height:1.12;letter-spacing:-.015em;margin:0">Ser Achada</h3><span class="pv-step-badge" aria-hidden="true" style="margin:8px 0 6px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DC1FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg></span>
+<h3 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:22px;line-height:1.12;letter-spacing:-.015em;margin:0">Ser Achada</h3><span class="pv-step-badge pv-beam pv-beam-soft" aria-hidden="true" style="margin:8px 0 6px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DC1FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg></span>
 <p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;text-wrap:pretty">A clínica precisa aparecer no momento em que alguém procura, não só para quem já é seguidor ou já ouviu falar dela. Isso significa Google Meu Negócio otimizado e conectado à estrutura de conversão, e uma página de conversão publicada e no ar.</p>
 </div>
 <div style="background:#16102A;border:1px solid rgba(244,241,250,.08);border-radius:20px;padding:32px;box-shadow:0 1px 2px rgba(0,0,0,.24);display:grid;gap:12px;align-content:start">
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.08em;color:#DC1FFF">ETAPA 02</span>
-<h3 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:22px;line-height:1.12;letter-spacing:-.015em;margin:0">Passar Confiança</h3><span class="pv-step-pill" aria-hidden="true" style="margin:8px 0 6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="#DC1FFF" fill-opacity=".9"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#DC1FFF" fill-opacity=".9"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#DC1FFF" fill-opacity=".9"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#DC1FFF" fill-opacity=".9"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#DC1FFF" fill-opacity=".9"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg></span>
+<h3 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:22px;line-height:1.12;letter-spacing:-.015em;margin:0">Passar Confiança</h3><span class="pv-step-pill pv-beam pv-beam-soft" aria-hidden="true" style="margin:8px 0 6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="#DC1FFF" fill-opacity=".9"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#DC1FFF" fill-opacity=".9"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#DC1FFF" fill-opacity=".9"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#DC1FFF" fill-opacity=".9"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="#DC1FFF" fill-opacity=".9"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg></span>
 <p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;text-wrap:pretty">Entre encontrar e decidir existe um segundo de dúvida, onde a clínica perde quem estava perto de marcar. A resposta: página com estética profissional e prova posicionada onde a dúvida nasce, copy escrita pra sua área, QR Code de avaliação e mensagens prontas que constroem prova com o tempo.</p>
 </div>
 <div style="background:#16102A;border:1px solid rgba(244,241,250,.08);border-radius:20px;padding:32px;box-shadow:0 1px 2px rgba(0,0,0,.24);display:grid;gap:12px;align-content:start">
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.08em;color:#DC1FFF">ETAPA 03</span>
-<h3 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:22px;line-height:1.12;letter-spacing:-.015em;margin:0">Virar Agenda</h3><span class="pv-step-badge" aria-hidden="true" style="margin:8px 0 6px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DC1FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg></span>
+<h3 style="font-family:'Outfit',system-ui,sans-serif;font-weight:600;font-size:22px;line-height:1.12;letter-spacing:-.015em;margin:0">Virar Agenda</h3><span class="pv-step-badge pv-beam pv-beam-soft" aria-hidden="true" style="margin:8px 0 6px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DC1FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg></span>
 <p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;text-wrap:pretty">Depois de confiar, a pessoa precisa de um caminho único até o contato, sem distração nem passo extra no meio. WhatsApp integrado à estrutura, com contexto já construído antes da primeira mensagem chegar.</p>
 </div>
 </div>
@@ -406,26 +483,26 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 </div>
 <div style="background:#16102A;border:1px solid rgba(244,241,250,.08);border-radius:28px;padding:var(--pv-box-pad);display:grid;grid-template-columns:var(--pv-prova-cols)">
 <div class="pv-prova-col-a">
-<span class="pv-prova-badge" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC1FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></span>
+<span class="pv-prova-badge pv-beam pv-beam-soft" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC1FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></span>
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.62)">O QUE SE OBSERVA</span>
 <p style="font-size:16px;line-height:1.55;color:#F4F1FA;font-weight:500;margin:0">Quem já é paciente indica sem pensar duas vezes. Quem nunca ouviu falar da clínica chega em silêncio, sem nenhum sinal de confiança.</p>
 <p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.68);margin:0">Por isso a primeira etapa existe: preparar a clínica pra esse desconhecido.</p>
 </div>
 <div class="pv-prova-col-b">
-<span class="pv-prova-badge" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC1FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.343-5.657"/><path d="M20 4v5h-5"/></svg></span>
+<span class="pv-prova-badge pv-beam pv-beam-soft" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC1FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.343-5.657"/><path d="M20 4v5h-5"/></svg></span>
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.62)">O QUE SE REPETE</span>
 <p style="font-size:16px;line-height:1.55;color:#F4F1FA;font-weight:500;margin:0">Entre encontrar o nome da clínica e decidir marcar, esse desconhecido procura algum sinal de que outras pessoas já confiaram antes.</p>
 <p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.68);margin:0">Por isso a prova fica no meio do caminho, onde a dúvida nasce.</p>
 </div>
 <div class="pv-prova-col-c">
-<span class="pv-prova-badge" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC1FFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg></span>
+<span class="pv-prova-badge pv-beam pv-beam-soft" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC1FFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg></span>
 <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:rgba(244,241,250,.62)">O QUE SE CONFIRMA</span>
 <p style="font-size:16px;line-height:1.55;color:#F4F1FA;font-weight:500;margin:0">Quando a mensagem chega no WhatsApp, o que confirma se a clínica estava pronta é o quanto esse desconhecido já sabe sobre o que vai encontrar.</p>
 <p style="font-size:16px;line-height:1.55;color:rgba(244,241,250,.68);margin:0">Por isso a última etapa fecha o caminho: contexto antes da primeira palavra.</p>
 </div>
 </div>
 <div style="display:grid;gap:16px;justify-items:center;text-align:center;padding-top:8px">
-<a href="https://wa.me/5541991811201?text=Oi%2C%20Rodrigo.%20Vim%20pela%20p%C3%A1gina%20e%20quero%20fazer%20o%20Teste%20do%20Desconhecido." target="_blank" rel="noopener" class="pv-btn pv-btn-gradient" data-pixel="lead">Fazer o Teste do Desconhecido</a>
+<a href="https://wa.me/5541991811201?text=Oi%2C%20Rodrigo.%20Vim%20pela%20p%C3%A1gina%20e%20quero%20fazer%20o%20Teste%20do%20Desconhecido." target="_blank" rel="noopener" class="pv-btn pv-btn-gradient pv-btn-sheen" data-pixel="lead">Fazer o Teste do Desconhecido</a>
 </div>
 </div>
 </section>
@@ -511,9 +588,9 @@ src="https://www.facebook.com/tr?id=692402367298918&ev=PageView&noscript=1"
 
 <section style="padding:0 24px var(--pv-section-y)">
 <div style="max-width:1160px;margin:0 auto;border-top:1px solid rgba(244,241,250,.12);padding-top:var(--pv-section-y);display:grid;gap:32px;justify-items:center;text-align:center">
-<h2 style="font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:clamp(30px,3.6vw,52px);line-height:1.06;letter-spacing:-.03em;margin:0;max-width:22ch;text-wrap:balance">O próximo passo é <span style="color:#DC1FFF">uma conversa</span></h2>
+<h2 style="font-family:'Outfit',system-ui,sans-serif;font-weight:700;font-size:clamp(30px,3.6vw,52px);line-height:1.06;letter-spacing:-.03em;margin:0;max-width:22ch;text-wrap:balance">O próximo passo é <span class="pv-text-shimmer">uma conversa</span></h2>
 <p style="font-size:18px;line-height:1.55;color:rgba(244,241,250,.64);margin:0;max-width:52ch;text-wrap:pretty">Você viu como o Método Ponto de Decisão foi pensado para reduzir a distância entre alguém que nunca ouviu falar da sua clínica e alguém pronto para marcar. Se isso faz sentido para a realidade da sua clínica, a PrimeVis está a uma mensagem de distância para te mostrar por onde o diagnóstico começa.</p>
-<a href="https://wa.me/5541991811201?text=Oi%2C%20Rodrigo.%20Vim%20pela%20p%C3%A1gina%20e%20quero%20fazer%20o%20Teste%20do%20Desconhecido." target="_blank" rel="noopener" class="pv-btn pv-btn-gradient" data-pixel="lead">Fazer o Teste do Desconhecido</a>
+<a href="https://wa.me/5541991811201?text=Oi%2C%20Rodrigo.%20Vim%20pela%20p%C3%A1gina%20e%20quero%20fazer%20o%20Teste%20do%20Desconhecido." target="_blank" rel="noopener" class="pv-btn pv-btn-gradient pv-btn-sheen" data-pixel="lead">Fazer o Teste do Desconhecido</a>
 </div>
 </section>
 
