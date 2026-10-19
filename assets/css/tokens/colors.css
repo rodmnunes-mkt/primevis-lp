@@ -10,6 +10,7 @@
 
   /* Gradiente assinatura "Fluxo Prime" */
   --pv-fluxo-prime:linear-gradient(135deg,#7130F0,#9109DF,#DC1FFF); /* @kind other */
+  --pv-fluxo-botao:linear-gradient(135deg,#7130F0,#9109DF); /* @kind other — botões: sem a ponta magenta (contraste com Névoa) */
   --pv-fluxo-prime-vertical:linear-gradient(180deg,#7130F0,#9109DF,#DC1FFF); /* @kind other */
 
   /* Derivados por transparência (nunca novos hex) */
